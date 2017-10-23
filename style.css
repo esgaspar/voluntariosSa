@@ -1,0 +1,8 @@
+.mini-photo img {
+    max-width:80px;
+    width: auto;
+}
+.photo img {
+    max-width:200px;
+    width: auto;
+}

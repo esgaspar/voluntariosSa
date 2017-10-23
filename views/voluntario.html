@@ -1,0 +1,272 @@
+<div class="row">
+  <div class="col-md-8">
+    <button class="btn btn-primary" data-toggle="modal" data-target="#modalPessoa">
+    <span class="glyphicon glyphicon-plus"></span> Novo
+    </button>
+  </div>
+  <div class="col-md-4">
+    <input class="form-control" placeholder="Pesquisar" ng-model="pesquisar.$">
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-12">
+    <div>
+      <div id="filters" class="panel panel-default collapse">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-12">
+              <label>DC50 <input type="checkbox" ng-model="pesquisar.dc50" ng-true-value="'true'" ng-false-value="'false'" />
+              </label>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">Dia de Apoio</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Seg <input type="checkbox" ng-model="pesquisar.apoio_seg" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                </div>
+                <div class="col-md-4">
+                  <label>Ter <input type="checkbox" ng-model="pesquisar.apoio_ter" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                </div>
+                <div class="col-md-4">
+                  <label>Qua <input type="checkbox"ng-model="pesquisar.apoio_qua" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Qui <input type="checkbox" ng-model="pesquisar.apoio_qui" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                </div>
+                <div class="col-md-4">
+                  <label>Sex <input type="checkbox" ng-model="pesquisar.apoio_sex" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                </div>
+                <div class="col-md-4">
+                  <label>Sab <input type="checkbox" ng-model="pesquisar.apoio_sab" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Dom <input type="checkbox" ng-model="pesquisar.apoio_dom" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="table table-striped" ng-init="listaVoluntarios()">
+      <label>Total de voluntarios cadastrados:
+        <span ng-bind="voluntarios.length"></span>
+      </label>
+      <thead>
+        <th>#</th>
+        <th>Nome <br><input class="form-control" placeholder="Nome" ng-model="pesquisar.nome"></th>
+        <th>Equipe<br><input class="form-control" placeholder="Equipe" ng-model="pesquisar.equipe"></th>
+        <th>Profissão<input class="form-control" placeholder="Profissão" ng-model="pesquisar.profissao"></th>
+        <th>Circuito<input class="form-control" placeholder="Circuito" ng-model="pesquisar.circuito"></th>
+        <th>Privilégio<input class="form-control" placeholder="Privilégio" ng-model="pesquisar.privilegio"></th>
+        <th><button class="glyphicon glyphicon-filter" data-toggle="collapse" data-target="#filters"></button></th>
+        <th></th>
+      </thead>
+      <tbody>
+        <!-- Listagem -->
+        <tr dir-paginate="voluntario in voluntarios|filter:pesquisar|itemsPerPage:8">
+          <td>
+            <div class=mini-photo>
+              <img ng-src="C:\fotos_voluntarios\{{voluntario.nome}}.jpg" alt="Insira a foto com o nome do voluntario na pasta C:/fotos_voluntarios: ">
+            </div>
+          </td>
+          <td>{{voluntario.nome}}</td>
+          <td>{{voluntario.equipe}}</td>
+          <td>{{voluntario.profissao}}</td>
+          <td>{{voluntario.circuito}}</td>
+          <td>{{voluntario.privilegio}}</td>
+          <td style="display: none">{{voluntario}}</td>
+          <td>
+            <button class="btn btn-info btn-xs" ng-click="editar(voluntario)">
+            <span class="glyphicon glyphicon-pencil"></span> Editar
+            </button>
+            <button class="btn btn-danger btn-xs" ng-click="excluir(voluntario)">
+            <span class="glyphicon glyphicon-trash"></span> Excluir
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- Paginação -->
+<div class="row">
+  <div class="col-md-12 text-center">
+    <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
+  </div>
+</div>
+<br>
+<br>
+<br>
+<!-- Modal Cadastro e Edição -->
+<div class="modal fade" id="modalPessoa" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form name="voluntarioForm" ng-submit="submitForm()" novalidate>
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+          <h4 class="modal-title" id="myModalLabel">Voluntario</h4>
+        </div>
+        <div class="modal-body">
+          <div class=photo>
+            <img ng-src="C:\fotos_voluntarios\{{voluntario.nome}}.jpg" alt="Insira a foto com o nome do voluntario na pasta C:/fotos_voluntarios: ">
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Nome<input class="form-control" type="text" ng-model="voluntario.nome" minlength="2" required/></label>
+                  <span class="error" ng-show="voluntarioForm.voluntario.nome.$error.required && !voluntarioForm.voluntario.nome.$pristine">Nome é obrigatório</span>
+                  <span class="error" ng-show="voluntarioForm.voluntario.nome.$error.minlength && !voluntarioForm.voluntario.nome.$pristine">No mínimo 2 caracteres</span>
+                </div>
+                <div class="col-md-6">
+                  <label>Data de Nascimento<input class="form-control" ng-model="voluntario.nascimento" type="text" name="date" placeholder="14/01/2017" onkeyup="
+                  var v = this.value;
+                  if (v.match(/^\d{2}$/) !== null) {
+                  this.value = v + '/';
+                  } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
+                  this.value = v + '/';
+                  }" maxlength="10" />
+                </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <!-- EMAIL -->
+                  <div class="form-group" ng-class="{ 'has-error' : voluntarioForm.email.$invalid && !voluntarioForm.email.$pristine }">
+                    <p ng-show="voluntarioForm.email.$invalid && !voluntarioForm.email.$pristine" class="help-block">Informe um e-mail válido.</p>
+                    <label>Email
+                    <input type="email" name="email" class="form-control" ng-model="voluntario.email">
+                  </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group" ng-class="{ 'has-error' : voluntarioForm.tel.$invalid && !voluntarioForm.tel.$pristine }">
+                    <label>Telefone
+                      <input class="form-control" type="text" placeholder="ex. 11 9 8325 8117" name="tel" ng-model="voluntario.telefone" required/>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label>Celular <input class="form-control" placeholder="ex. 11 9 8325 8117" type="tel" ng-model="voluntario.celular" /></label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Estado Cívil<select class="form-control" ng-init="estadosCivis=['Solteiro','Casado','Divorciado', 'Viúvo']" ng-model="voluntario.estado_civil" ng-options="estadosCivil for estadosCivil in estadosCivis"></select>
+                </label>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label>Gênero<select class="form-control" ng-init="generos=['Masculino','Feminino']" ng-model="voluntario.genero" ng-options="genero for genero in generos"></select></label>
+                  </div>
+                </div </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <label>Congregação<input class="form-control" type="text" ng-model="voluntario.congregacao" /></label>
+                    </div>
+                    <div class="col-md-4">
+                      <label>Circuito<input class="form-control" type="text" ng-model="voluntario.circuito" /></label>
+                    </div>
+                    <div class="col-md-4">
+                      <label>Privilegio<select class="form-control" ng-init="privilegios=['Publicador','Pioneiro Regular','Pioneiro Auxiliar','Servo Ministerial','Ancião']" ng-model="voluntario.privilegio" ng-options="privilegio for privilegio in privilegios"></select></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label>Registro<input class="form-control" type="text" ng-model="voluntario.registro" /></label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label>Profissão<input class="form-control" type="text" ng-model="voluntario.profissao" /></label>
+                    </div>
+                    <div class="col-md-6">
+                      <label>Equipe<input class="form-control" type="text" ng-model="voluntario.equipe" /></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <label>DC50 <input type="checkbox" ng-model="voluntario.dc50" ng-true-value="'true'" ng-false-value="'false'" />
+                    </label>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Dia de Apoio</div>
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label>Seg <input type="checkbox" ng-model="voluntario.apoio_seg" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                        </div>
+                        <div class="col-md-4">
+                          <label>Ter <input type="checkbox" ng-model="voluntario.apoio_ter" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                        </div>
+                        <div class="col-md-4">
+                          <label>Qua <input type="checkbox" ng-model="voluntario.apoio_qua" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label>Qui <input type="checkbox" ng-model="voluntario.apoio_qui" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                        </div>
+                        <div class="col-md-4">
+                          <label>Sex <input type="checkbox" ng-model="voluntario.apoio_sex" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                        </div>
+                        <div class="col-md-4">
+                          <label>Sab <input type="checkbox" ng-model="voluntario.apoio_sab" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label>Dom <input type="checkbox" ng-model="voluntario.apoio_dom" ng-true-value="'true'" ng-false-value="'false'" /></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label>Obs: <textarea class="form-control" type="text" ng-model="voluntario.obs" /></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <div><button type=" button " class="btn btn-default " ng-click="voluntario={ } " data-dismiss="modal">Cancelar</button>
+            <button type="button " class="btn btn-primary " ng-click="salvar()" ng-disabled=" voluntarioForm.$invalid ">Salvar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>

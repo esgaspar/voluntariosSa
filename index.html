@@ -1,0 +1,64 @@
+<html ng-app="cdg">
+
+<head>
+	<title>VoluntariosSA</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+
+	<script src="node_modules/angular-input-masks/angular-input-masks.js"></script>
+
+	<link rel="stylesheet" href="style.css" />
+	<script src="script.js"></script>
+	<script src="telefone.directive.js"></script>
+
+
+
+	<!-- jQuery -->
+	<script>
+window.$ = window.jQuery = require('jquery');
+	</script>
+
+	<!-- Bootstrap -->
+	<script src="bootstrap/js/bootstrap.js"></script>
+
+	<!-- Angular -->
+	<script src="node_modules/angular/angular.js"></script>
+	<!-- Angular - Pagination -->
+	<script src="node_modules/angular-utils-pagination/dirPagination.js"></script>
+
+	<!-- App -->
+	<script src="app.js"></script>
+
+	<!-- Controllers -->
+	<script src="controllers/voluntarioController.js"></script>
+
+	<!-- Services -->
+	<script src="services/dbService.js"></script>
+</head>
+
+<body>
+	<!-- Menu -->
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#/">
+					Voluntarios SA
+				</a>
+			</div>
+		</div>
+	</nav>
+	<!-- Onde será carregada a view -->
+	<div ng-view="" class="container"></div>
+	<!-- Rodapé -->
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+		<div class="container">
+			<ul class="nav navbar-nav">
+				<li>
+					<a href="#">Voluntarios SA</a>
+				</li>
+
+			</ul>
+		</div>
+	</nav>
+</body>
+
+</html>
