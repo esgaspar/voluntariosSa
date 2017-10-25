@@ -6,15 +6,18 @@ var BrowserWindow = require('browser-window');
 var mainWindow = null;
 
 // Sair da aplicação quando todas as janelas forem fechadas
-app.on('window-all-closed', function() {
+app.on('window-all-closed', function () {
   if (process.platform != 'darwin') {
     app.quit();
   }
 });
 
-app.on('ready', function() {
+app.on('ready', function () {
   // Cria a janela do browser.
-  mainWindow = new BrowserWindow({width: 1200, height: 700});
+  mainWindow = new BrowserWindow({
+    width: 1200,
+    height: 700
+  });
 
   // Carrega o arquivo html principal.
   mainWindow.loadURL('file://' + __dirname + '/index.html');
@@ -23,7 +26,7 @@ app.on('ready', function() {
   // mainWindow.webContents.openDevTools();
 
   // Evento emitido quando a janela é fechada, usado para destruir instancia.
-  mainWindow.on('closed', function() {
+  mainWindow.on('closed', function () {
     mainWindow = null;
   });
 });
