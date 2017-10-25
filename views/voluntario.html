@@ -141,7 +141,7 @@
 <div class="modal fade" id="modalPessoa" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form name="voluntarioForm" ng-submit="submitForm()" novalidate>
+      <form name="voluntarioForm" ng-submit="submitForm()" novalidate autocomplete="on">
 
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -154,13 +154,12 @@
             <button type="button" class="glyphicon glyphicon-picture" onclick="chooseFile('#fileDialog')" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-
             <p>
+              <input id="imageName" class="form-control" type="text" ng-bind="voluntario.imagem" ng-model="voluntario.imagem" ng-model-options="{ getterSetter: true }"
+              />
               <input id="fileDialog" type="file" style="display: none" />
-              <input id="imageName" class="form-control" type="text" ng-model="voluntario.imagem" />
             </p>
-            <!-- <img id="showFile" /> -->
-            <img id="showFile" id ng-src="{{voluntario.imagem}}">
+            <img id="showFile" id ng-src="{{voluntario.imagem}}" ng-model="voluntario.imagem">
           </div>
           <div class="panel panel-default">
             <div class="panel-body">
@@ -364,8 +363,12 @@
       var imageNewPath = "uploads/" + new Date().getTime() + "." + this.files[0].name;
       var source = fs.createReadStream(this.files[0].path);
       var desti = fs.createWriteStream(imageNewPath);
+      imageNameInput.focus();
       imageNameInput.value = imageNewPath;
       imageNameInput.nodeValue = imageNewPath;
+      imageNameInput.viewValue = imageNewPath;
+      imageNameInput.debounceViewValueCommit = imageNewPath;
+
 
       source.pipe(desti);
       source.on('end', function () {

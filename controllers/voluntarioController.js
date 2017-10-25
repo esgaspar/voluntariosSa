@@ -15,6 +15,7 @@ app.controller("voluntarioController", function ($scope, $location, dbService) {
 
 			alert('Verifique os campos');
 		} else {
+			console.log($scope.voluntario);
 			if ($scope.voluntario.id) {
 				//Editar
 				var id = $scope.voluntario.id;
