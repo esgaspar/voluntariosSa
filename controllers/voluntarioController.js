@@ -28,7 +28,8 @@ app.controller("voluntarioController", function ($scope, $location, $compile, db
 				});
 			});
 			var buttonAppend = null;
-			var buttonAppend = '<button id=*confirmBtn'+img[1]+'* type=*button* class=*glyphicon glyphicon-ok-circle* ng-click=*changeImage(!' + img[1] + img[2] + img[3] + '!)*/>';
+			var buttonAppend =
+				'<button id=*confirmBtn' + img[1] + '* type=*button* class=*glyphicon glyphicon-ok-circle* title=*Click para confirmar* ng-click=*changeImage(!' + img[1] + img[2] + img[3] + '!)*/>';
 			
 			buttonAppend = buttonAppend.replace(/\*/g, '"');
 			buttonAppend = buttonAppend.replace(/!/g, '\'');
@@ -50,6 +51,9 @@ app.controller("voluntarioController", function ($scope, $location, $compile, db
 	
 	$scope.changeImage = function (imagePath) {
 		$scope.voluntario.imagem = "uploads/"+imagePath;
+		var $el = $("#confirmDv button").replaceWith('<button type="button" style="display:none"></button>');
+		var $el = $(buttonAppend).replaceAll("#confirmDv button");
+		$compile($el)($scope);
 	}
 
 	//Listando
